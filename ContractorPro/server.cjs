@@ -1,0 +1,3 @@
+const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
+const allowed={'/':'index.html','/index.html':'index.html','/app.js':'app.js','/config.js':'config.js','/style.css':'style.css'};
+http.createServer((req,res)=>{const file=allowed[req.url.split('?')[0]];if(!file){res.writeHead(404);return res.end('Not found')}const ext=path.extname(file);res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8'})[ext]);fs.readFile(path.join(__dirname,file),(err,data)=>{if(err){res.writeHead(500);res.end('Read error')}else res.end(data)})}).listen(8080,'127.0.0.1',()=>console.log('ContractorPro: http://localhost:8080'));
